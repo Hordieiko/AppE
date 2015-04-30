@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <fragment
+              android:id="@+id/map"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:name="com.google.android.gms.maps.MapFragment">
+
+    </fragment>
+
+
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickTest"
+        android:text="My Location"
+        android:layout_alignParentBottom="true"
+        >
+    </Button>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:text="normal"
+        android:id="@+id/btnNormal"
+        android:onClick="clickMapType"
+        android:textSize="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/btnTest"
+        android:layout_alignEnd="@+id/btnTest"
+        />
+
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:text="satellite"
+        android:id="@+id/btnSatellite"
+        android:textSize="8dp"
+        android:layout_alignParentTop="true"
+        android:onClick="clickMapType"
+        android:layout_toRightOf="@+id/btnNormal"
+        android:layout_toEndOf="@+id/btnNormal"/>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:text="terrain"
+        android:id="@+id/btnTerrain"
+        android:onClick="clickMapType"
+        android:layout_alignBottom="@+id/btnSatellite"
+        android:layout_toRightOf="@+id/btnSatellite"
+        android:layout_toEndOf="@+id/btnSatellite"
+        android:textSize="8dp"/>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:text="hybrid"
+        android:id="@+id/btnHybrid"
+        android:onClick="clickMapType"
+        android:layout_alignBottom="@+id/btnTerrain"
+        android:layout_toRightOf="@+id/btnTerrain"
+        android:layout_toEndOf="@+id/btnTerrain"
+        android:textSize="8dp"/>
+</RelativeLayout>
+
