@@ -114,7 +114,7 @@ public class TaskService extends Service implements LocationListener {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
+        // TODO: Return the communication channel to the service.asd
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
