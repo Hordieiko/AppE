@@ -66,5 +66,29 @@
         android:layout_toRightOf="@+id/btnTerrain"
         android:layout_toEndOf="@+id/btnTerrain"
         android:textSize="8dp"/>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="H"
+        android:id="@+id/buttonDialog"
+        android:layout_marginTop="61dp"
+        android:textSize="30dp"
+        android:layout_below="@+id/btnHybrid"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:onClick="showInfoDialog"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:id="@+id/btnDone"
+        android:layout_alignTop="@+id/btnTest"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:onClick="clickMapDone"/>
 </RelativeLayout>
 

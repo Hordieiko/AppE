@@ -3,12 +3,28 @@
     package="com.example.pemik_000.appe"
     android:installLocation="auto" >
 
+    <!-- Проверка доступности сети требует нужных прав у приложения (ACCESS_NETWORK_STATE) , поэтому добавим в манифест строчку: -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--Это доступ в инет, проверка доступности инета, сохранение кэша карт и доступ к гугл-веб-сервисам.-->
+    <!-- разрешение на Wi-Fi -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.UPDATE_DEVICE_STATS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- Battery -->
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+
+    <!-- Send SMS -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <!-- Запрос разрешения на чтение поставщика CONTACTS -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- Это доступ в инет, проверка доступности инета, сохранение кэша карт и доступ к гугл-веб-сервисам. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"></uses-permission>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
          The following two permissions are not required to use
          Google Maps Android API v2, but are recommended.
@@ -55,8 +71,31 @@
             android:value="AIzaSyCXEBkTZ-ILTfHlNdT3PGIENtXjICfG2ws" />
 
         <activity
-            android:name=".Map"
+            android:name=".Location"
             android:label="@string/title_activity_map" >
+        </activity>
+        <activity
+            android:name=".SendMessage"
+            android:label="@string/title_activity_contacts_list" >
+        </activity>
+
+        <service
+            android:name=".TaskService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name=".BatteryLevel"
+            android:label="@string/title_activity_battery_level" >
+        </activity>
+        <activity
+            android:name=".Notification"
+            android:label="@string/title_activity_notification" >
+        </activity>
+        <activity
+            android:name=".Help"
+            android:label="@string/title_activity_help" >
         </activity>
     </application>
 

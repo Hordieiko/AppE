@@ -24,7 +24,7 @@
         android:src="@android:drawable/ic_menu_add"
         android:layout_marginTop="130dp"
         android:layout_alignParentTop="true"
-        android:onClick="onclickplus"
+        android:onClick="onclickPlus"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="-3dp"/>
@@ -36,7 +36,7 @@
         android:id="@+id/textAddNewTask"
         android:layout_below="@+id/textAddNewTask"
         android:textSize="24dp"
-        android:onClick="onclickplus"
+        android:onClick="onclickPlus"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"/>
 

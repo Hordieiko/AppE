@@ -16,6 +16,27 @@ import java.util.ArrayList;
 
 public class AddNewTask extends ActionBarActivity {
 
+
+    // Location
+    public double UserLatitude = 0;
+    public double UserLongitude = 0;
+    private final double radius = 0.0001;
+
+    // ИКС
+    //Latitude 46.45948
+    //Longitude 30.75205
+
+
+    // Notification
+    private String titleNotification;
+    private String textNotification;
+
+
+
+    ArrayList<Integer> triggerPos = new ArrayList<>();
+    ArrayList<Integer> actionPos = new ArrayList<>();
+
+
     EditText nameTask;
     ListView listTriggersTask;
     ListView listActionsTask;
@@ -26,13 +47,11 @@ public class AddNewTask extends ActionBarActivity {
     ArrayAdapter<String> adapterActT;
     ArrayAdapter<String> adapterTrgT;
 
-    final int REQUEST_ACTIONS = 1;
-    final int REQUEST_TRIGGER = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
+
 
         //имя задания
         nameTask = (EditText) findViewById(R.id.nameTask);
@@ -55,69 +74,212 @@ public class AddNewTask extends ActionBarActivity {
 
     }
 
-    //добавляем новый триггер в задание
-    private void addNewTrg(String nameTrg) {
-        triggersArrT.add(nameTrg);
-        adapterTrgT.notifyDataSetChanged();
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
-    //добавляем новое действие в задание
-    public void addNewAct(String nameAct) {
-        actionsArrT.add(nameAct);
-        adapterActT.notifyDataSetChanged();
+    //добавляем новый триггер в listView Triggers задание
+    private void addNewTrgInList() {
+        for (Integer itemTrg : triggerPos) {
+            switch (itemTrg) {
+                case 0:
+                    adapterTrgT.add("Location");
+                    break;
+                case 1:
+                    adapterTrgT.add("Time frame");
+                    break;
+                case 2:
+                    adapterTrgT.add("Buttery level");
+                    break;
+                case 3:
+                    adapterTrgT.add("Charging");
+                    break;
+                case 4:
+                    adapterTrgT.add("Wi-Fi");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    //добавляем новое действие в listView Actions задание
+    public void addNewActInList() {
+        for (Integer itemAct : actionPos) {
+            switch (itemAct) {
+                case 0:
+                    adapterActT.add("Send SMS");
+                    break;
+                case 1:
+                    adapterActT.add("Notification");
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     //задание сформировано
     public void clickDone(View v) {
-        if (nameTask.length() == 0) {
-            Toast.makeText(this, "Enter task name", Toast.LENGTH_LONG).show();
-        } else if (triggersArrT.isEmpty()) {
-            Toast.makeText(this, "Add triggers", Toast.LENGTH_LONG).show();
-        } else if (actionsArrT.isEmpty()) {
-            Toast.makeText(this, "Add action", Toast.LENGTH_LONG).show();
-        } else {
-            Intent intent = new Intent();
+        if (validForm(nameTask, triggersArrT, actionsArrT)) {
+
+            Intent intent = new Intent(this, TaskService.class);
+            for (Integer item : triggerPos) {
+                switch (item) {
+                    case 0: //Location
+                        intent.putExtra("latitude", UserLatitude);
+                        intent.putExtra("longitude", UserLongitude);
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            for (Integer item : actionPos) {
+                switch (item) {
+                    case 0:
+                        break;
+                    case 1: //Notification
+                        intent.putExtra("titleNotification", titleNotification);
+                        intent.putExtra("textNotification", textNotification);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            intent.putExtra("triggerPos", triggerPos);
+            intent.putExtra("actionPos", actionPos);
+            startService(intent);
+
+//-------------------------- Ответ для MainActivity ----------------------------
+            Intent resIntent = new Intent();
             intent.putExtra("TITlE", nameTask.getText().toString());
-            setResult(RESULT_OK, intent);
+            setResult(RESULT_OK, resIntent);
             finish();
         }
     }
 
+    // проверка на пустоту формы
+    private boolean validForm(EditText nameTask,
+                              ArrayList<String> triggersArrT, ArrayList<String> actionsArrT) {
+        if (nameTask.length() == 0) {
+            Toast.makeText(this, "Enter task name", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (triggersArrT.isEmpty()) {
+            Toast.makeText(this, "Add triggers", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (actionsArrT.isEmpty()) {
+            Toast.makeText(this, "Add action", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //добавить Триггер либо Дествие
     public void clickAdd(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.addTriggers:
                 intent = new Intent(this, TriggersList.class);
-                startActivityForResult(intent, REQUEST_TRIGGER);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.addActions:
                 intent = new Intent(this, ActionsList.class);
-                startActivityForResult(intent, REQUEST_ACTIONS);
+                startActivityForResult(intent, 2);
                 break;
             default:
                 break;
         }
     }
 
-
-    @Override // заполняем ListView выбранными Actions и Triggers
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == RESULT_OK) {
+        if (data == null) {
+            return;
+        } else if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_ACTIONS:
-                    addNewAct(data.getStringExtra("nameAct"));
+                case 1:  //вернулись данные о триггере
+
+                    int positionT = data.getIntExtra("positionT", 5);
+                    if (positionT < 5) {
+
+                        //Нужно обработать данные в зависимости от тригера.
+
+                        switch (positionT) {
+                            case 0: //Location
+                                UserLatitude = data.getDoubleExtra("latitude", 0);
+                                UserLongitude = data.getDoubleExtra("longitude", 0);
+
+                                triggerPos.add(positionT);
+                                adapterTrgT.add("Location");
+                                break;
+                            case 1: //Time frame
+
+                                triggerPos.add(positionT);
+                                adapterTrgT.add("Time frame");
+                                break;
+                            case 2: //Buttery level
+                                triggerPos.add(positionT);
+                                adapterTrgT.add("Buttery level");
+                                break;
+                            case 3: //Charging
+                                triggerPos.add(positionT);
+                                adapterTrgT.add("Charging");
+                                break;
+                            case 4: //Wi-Fi
+
+                                adapterTrgT.add("Wi-Fi");
+                                break;
+                            default:
+                                break;
+                        }
+                        triggerPos.add(positionT);
+                    }
                     break;
-                case REQUEST_TRIGGER:
-                    addNewTrg(data.getStringExtra("nameTrg"));
+                case 2: //вернулись данные о действие
+
+                    int positionA = data.getIntExtra("positionA", 22);
+                    if (positionA < 22) {
+                        switch (positionA) {
+                            case 0:
+
+                                adapterActT.add("Send SMS");
+                                break;
+                            case 1: //Send Notification
+                                titleNotification = data.getStringExtra("TitleNotification");
+                                textNotification = data.getStringExtra("TextNotification");
+
+                                adapterActT.add("Notification");
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                break;
+                        }
+                        actionPos.add(positionA);
+                    }
                     break;
                 default:
                     break;
             }
-            // если вернулось не ОК
-        } else {
-            Toast.makeText(this, "Wrong result", Toast.LENGTH_SHORT).show();
         }
+        adapterTrgT.notifyDataSetChanged();
+        adapterActT.notifyDataSetChanged();
     }
 
 

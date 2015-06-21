@@ -12,23 +12,31 @@
     <string name="addNewTask">Add new task</string>
 
     <string-array name="actions">
-        <item>firstAct</item>
-        <item>secondAct</item>
-        <item>thirdAct</item>
-        <item>fourthAct</item>
-        <item>fifthAct</item>
+        <item>Send SMS</item>
+        <item>Notification</item>
+        <item>Ringer Volume</item>
+        <item>Brightness</item>
+        <item>GPS</item>
+        <item>Wi-Fi</item>
+        <item>Bluetooth</item>
+        <item>Airplane Mode</item>
+        <item>Launch Website</item>
     </string-array>
 
     <string-array name="triggers">
-        <item>firstTrg</item>
-        <item>secondTrg</item>
-        <item>thirdTrg</item>
-        <item>fourthTrg</item>
-        <item>fifthTrg</item>
+        <item>Location</item>
+        <item>Time frame</item>
+        <item>Buttery level</item>
+        <item>Charging</item>
+        <item>Wi-Fi Connection</item>
     </string-array>
 
     <string name="title_activity_actions_list">Actions List</string>
     <string name="title_activity_triggers_list">TriggersList</string>
     <string name="title_activity_map">Map</string>
+    <string name="title_activity_contacts_list">ContactsList</string>
+    <string name="title_activity_battery_level">Battery Level</string>
+    <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_help">Help</string>
 
 </resources>

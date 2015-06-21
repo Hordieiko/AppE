@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="#ff92c2fb">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Send to: "
+        android:id="@+id/textViewSendTo"
+        android:textSize="24dp"
+        android:paddingLeft="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingTop="0dp"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/editTextNumber"
+        android:layout_toRightOf="@+id/textViewSendTo"
+        android:hint="Enter number"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:textSize="24dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#ffffa9a7"
+        android:background="#ffdbffd3"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextMassage"
+        android:lines="12"
+        android:inputType="textMultiLine"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#ffdbffd3"
+        android:layout_below="@+id/textViewMassage"
+        android:padding="5dp"
+        android:textSize="20dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Massage:"
+        android:id="@+id/textViewMassage"
+        android:textSize="24dp"
+        android:layout_marginTop="23dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="5dp"
+        android:layout_below="@+id/editTextNumber"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:id="@+id/btnDone"
+        android:layout_below="@+id/editTextMassage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#ff3f7cff"
+        android:textColor="#ffffffff"
+        android:textStyle="bold"
+        android:textSize="24dp"/>
+</RelativeLayout>

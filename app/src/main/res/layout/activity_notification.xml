@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="com.example.pemik_000.appe.Notification"
+                android:background="#ffc6dbf5">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter title to notification:"
+            android:id="@+id/tvTitleNotification"
+            android:textSize="24dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etTitleNotification"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="22dp"
+            android:background="#ffdbffd3"
+            android:layout_weight="0.17"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter text to notification: "
+            android:id="@+id/tvTextNotification"
+            android:textSize="24dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/etTextNotification"
+            android:lines="5"
+            android:textSize="20dp"
+            android:background="#ffdbffd3"
+            android:layout_weight="0.5"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:id="@+id/btnDoneNotification"
+            android:layout_gravity="center_horizontal"
+            android:background="#ff3f7cff"
+            android:textColor="#ffffffff"
+            android:textSize="24dp"
+            android:layout_marginTop="120dp"/>
+    </LinearLayout>
+</RelativeLayout>

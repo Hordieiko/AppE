@@ -1,7 +1,9 @@
 package com.example.pemik_000.appe;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.location.Location;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -20,19 +22,25 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-public class Map extends ActionBarActivity implements LocationListener,
+public class Location extends ActionBarActivity implements LocationListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener,
         GoogleMap.OnCameraChangeListener {
 
     MapFragment mapFragment;
     LocationManager locationManager;
     GoogleMap map;
-    Location loca;
+    android.location.Location location;
     Marker marker;
     String idMarker = "";
+    String nameTrg;
+    AddNewTask addNewTask;
+
+    private double latitude = 0;
+    private double longitude = 0;
+
+
+
+    TaskManager taskManager = new TaskManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +72,25 @@ public class Map extends ActionBarActivity implements LocationListener,
 
         map.setOnMapClickListener(this);
 
+        Intent intent = getIntent();
+        nameTrg = intent.getStringExtra("nameTrg");
+    }
+
+    public void showInfoDialog(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Location.this);
+        builder.setTitle("Как это работает ?!")
+                .setMessage("Укажите место на карте, выставив маркер в нужном Вам месте. " +
+                        "Подтвердите ваш выбор нажав на кнопку Done")
+                //.setIcon(R.drawable.)
+                .setCancelable(false)
+                .setNegativeButton("Окей",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -82,15 +109,35 @@ public class Map extends ActionBarActivity implements LocationListener,
 
     //Button "My Location"
     public void onClickTest(View v){
-        showLocation(loca);
+        showLocation(location);
+    }
+
+    private void showLocation(android.location.Location location) {
+        if (location == null) {
+            Toast.makeText(this, "No information on the location", Toast.LENGTH_LONG).show();
+            return;
+        } else {
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    // Это точка, на которую смотрит камера. Задали текущие координаты,
+                    // которые определил locationManager
+                    .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .zoom(23) // текущий уровень зума
+                    .bearing(0) // угол поворота камеры от севера по часовой
+                    .tilt(45) // угол наклона камеры
+                    .build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+            map.animateCamera(cameraUpdate);
+            Toast.makeText(this, "UserLatitude: " + location.getLatitude() +
+                    "UserLongitude: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+        }
     }
 
     // Методы LocationListener: onLocationChanged,onStatusChanged,onProviderEnabled,onProviderDisabled
-
+//-------------------------------------------------------------------------------------
     // новые данные о местоположении
     @Override
-    public void onLocationChanged(Location location) {
-        loca = location;
+    public void onLocationChanged(android.location.Location location) {
+        this.location = location;
         // showLocation(location);
     }
 
@@ -108,8 +155,8 @@ public class Map extends ActionBarActivity implements LocationListener,
         // Оно может быть вполне актуальным, если вы до этого
         // использовали какое-либо приложение с определением местоположения.
         checkEnabled();
-        loca = locationManager.getLastKnownLocation(provider);
-        //showLocation(locationManager.getLastKnownLocation(provider));
+        location = locationManager.getLastKnownLocation(provider);
+
     }
 
     // указанный провайдер был отключен юзером
@@ -125,23 +172,8 @@ public class Map extends ActionBarActivity implements LocationListener,
         }
     }
 
-    private void showLocation(Location location) {
-        if (location == null) {
-            Toast.makeText(this, "location == null", Toast.LENGTH_LONG).show();
-            return;
-        } else {
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    // Это точка, на которую смотрит камера. Задали текущие координаты,
-                    // которые определил locationManager
-                    .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                    .zoom(15) // текущий уровень зума
-                    .bearing(0) // угол поворота камеры от севера по часовой
-                    .tilt(45) // угол наклона камеры
-                    .build();
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-            map.animateCamera(cameraUpdate);
-        }
-    }
+//-----------------------------------------------------------------------------
+
 
     // устанавливаем тип карты
     public void clickMapType(View v) {
@@ -160,7 +192,6 @@ public class Map extends ActionBarActivity implements LocationListener,
                 break;
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -198,14 +229,17 @@ public class Map extends ActionBarActivity implements LocationListener,
         }
         marker = map.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title("Latitude: " + latLng.latitude + "Longitude: " + latLng.longitude)
+                .title("UserLatitude: " + latLng.latitude + "UserLongitude: " + latLng.longitude)
                 .draggable(true)); // возможность премещать
         idMarker = marker.getId();
 
+        latitude = latLng.latitude;
+        longitude = latLng.longitude;
+
         // ОКРУГЛЕНИЕ ДО 3х ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ !!!!!!
-        double a = latLng.latitude;
-        double newDouble = new BigDecimal(a).setScale(3, RoundingMode.UP).doubleValue();
-        Toast.makeText(this,"" + newDouble, Toast.LENGTH_LONG).show();
+        //double a = latLng.latitude;
+        //double newDouble = new BigDecimal(a).setScale(3, RoundingMode.UP).doubleValue();
+        //Toast.makeText(this,"ОКРУГЛЕНИЕ ДО 3х ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ: " + newDouble, Toast.LENGTH_LONG).show();
     }
 
     //сработает при длительном нажатии на карту
@@ -213,4 +247,20 @@ public class Map extends ActionBarActivity implements LocationListener,
     public void onMapLongClick(LatLng latLng) {
 
     }
+
+    //Закончили работу с картой
+    public void clickMapDone(View view) {
+
+        if (latitude!=0 || longitude!=0) {
+            Intent intent = new Intent();
+            intent.putExtra("latitude", latitude);
+            intent.putExtra("longitude", longitude);
+            setResult(RESULT_OK, intent);
+
+            finish();
+        } else Toast.makeText(this, "Set Marker!", Toast.LENGTH_LONG).show();
+
+    }
+
+
 }
